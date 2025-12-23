@@ -1,23 +1,31 @@
-import prisma from "@/lib/db";
-import { getQueryClient, trpc } from "@/trpc/server";
+// "use client";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+import { requireAuth } from "@/lib/auth-utils";
 import { caller } from "@/trpc/server";
-import { Client } from "./client";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { toast } from "sonner";
+import { LogOutButton } from "./logOut";
 
 const Page = async () => {
+  await requireAuth();
+  // const {data} = authClient.useSession();
+  const data = await caller.getUsers();
+  console.log('data', data);
 
-  const queryClient = getQueryClient();
-  // const users = await caller.getUsers();
-  void queryClient.prefetchQuery(trpc.getUsers.queryOptions());
   return (
     <>
-      {/* <div className="text-red-500">{JSON.stringify(users)} hehehe  haha</div> */}
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Client />
-        </Suspense>
-      </HydrationBoundary>
+      <div className="text-red-500 flex flex-col gap-y-6 items-center">
+        <div>
+         Protected server component
+        </div>
+        <div>{JSON.stringify(data, null, 2)}</div>
+        <div>
+          <LogOutButton></LogOutButton>
+        </div>
+      </div>
+
+      {/* <Button onClick={() => authClient.signOut()}>Sign Out</Button> */}
     </>
   )
 }
