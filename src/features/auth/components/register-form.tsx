@@ -74,8 +74,14 @@ export function RegisterForm() {
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             <div className="grid gap-6">
                                 <div className="flex flex-col gap-4">
-                                    <Button variant={"outline"} className="w-full" type="button" disabled={isPending}>Continue with Google</Button>
-                                    <Button variant={"outline"} className="w-full" type="button" disabled={isPending}>Continue with GitHub</Button>
+                                    <Button variant={"outline"} className="w-full" type="button" disabled={isPending}>
+                                        <Image src="/logos/google.svg" alt="Google" width={20} height={20} />
+                                        Continue with Google
+                                    </Button>
+                                    <Button variant={"outline"} className="w-full" type="button" disabled={isPending}>
+                                        <Image src="/logos/github.svg" alt="GitHub" width={20} height={20} />
+                                        Continue with GitHub
+                                    </Button>
                                 </div>
                                 <div className="grid gap-6">
                                     <FormField control={form.control} name="email" render={({field}) => (
