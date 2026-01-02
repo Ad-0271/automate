@@ -22,6 +22,12 @@ const Page = () => {
       toast.success('Job queued');
     }
   }));
+  const testAI = useMutation(trpc.testAI.mutationOptions({
+    onSuccess: (data) => {
+      console.log('data', data);
+      toast.success(data.message);
+    }
+  }))
   console.log('data', data);
 
   return (
@@ -31,9 +37,10 @@ const Page = () => {
          Protected server component
         </div>
         <div>{JSON.stringify(data, null, 2)}</div>
-        <div>
+        <div className="flex gap-x-4">
           {/* <LogOutButton></LogOutButton> */}
           <Button onClick={() => create.mutate()} disabled={create.isPending}>Create Workflow</Button>
+          <Button onClick={() => testAI.mutate()} disabled={testAI.isPending}>Test AI</Button>
         </div>
       </div>
 

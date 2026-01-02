@@ -2,6 +2,8 @@
 import { inngest } from '@/inngest/client';
 import { baseProcedure, createTRPCRouter, protectedProcedure } from '../init';
 import prisma from '@/lib/db';
+import { google } from '@ai-sdk/google';
+import { generateText } from 'ai';
 // import { email } from 'zod';
 export const appRouter = createTRPCRouter({
   // getUsers: protectedProcedure
@@ -13,6 +15,17 @@ export const appRouter = createTRPCRouter({
   //       }
   //     });
   //   }),
+    testAI: protectedProcedure.mutation(async () => {
+      await inngest.send({
+        name: 'execute/ai',
+        data: {
+          prompt: 'Write a vegetarian lasagna recipe for 4 people.',
+        }
+      });
+
+      return {success: true, message: 'AI job queued'};
+
+    }),
     getWorkflows: protectedProcedure
     .query(({ctx}) => {
         return prisma.workflow.findMany();
